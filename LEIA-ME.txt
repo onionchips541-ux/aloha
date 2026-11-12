@@ -1,0 +1,25 @@
+VERSÃO 12 — DUAS LOJAS, PAINEL COMPLETO
+
+ARQUIVOS PARA ENVIAR AO GITHUB (substituem os antigos):
+  package.json
+  prepare.js
+  src/index.html               (preencha API e CHAVE nele antes)
+  assets/                      (NOVO: logo-onionchips.png e icon-only.png)
+  .github/workflows/apk.yml
+  assinatura/debug.keystore.b64   (mantenha o repositório PRIVADO)
+
+PLANILHA (Apps Script):
+  1. Cole apps-script/Code.gs no editor (substitui o código antigo).
+  2. Ajuste CHAVE (igual à do app) e ADMIN (senha do painel administrador).
+  3. Implante uma NOVA VERSÃO (Implantar > Gerenciar implantações > Nova versão).
+  4. Não é preciso criar abas: Config, Listas, Mínimos e Painel são criadas sozinhas.
+
+SENHAS PADRÃO
+  Praça Nova: 123   Aviação: 123   (troque no painel: Configurações)
+  Admin: a senha de ADMIN no Code.gs.
+
+LINK FIXO DO APK:
+  https://github.com/USUARIO/REPOSITORIO/releases/download/ultima/Estoque-Onion-Chips.apk
+
+Dados antigos da Praça Nova continuam no mesmo lugar: as contagens e as abas
+mensais de "Cozinha"/"Frente" não mudam de nome.
