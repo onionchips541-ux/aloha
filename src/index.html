@@ -656,7 +656,12 @@ var LINE="━━━━━━━━━━━━━━━━━━";
 function warnList(){var a=[];D.forEach(function(c,ci){c[2].forEach(function(it,ii){if(stateOf(ci,ii).warn)a.push(it.n);});});return a;}
 var NATIVE=!!(window.Capacitor&&Capacitor.isNativePlatform&&Capacitor.isNativePlatform());
 function sharer(t){var P=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Share;if(P){P.share({text:t}).catch(function(){});return true;}if(navigator.share){navigator.share({text:t}).catch(function(){});return true;}return false;}
-function compartilhar(t){if(sharer(t))return;window.open("https://wa.me/?text="+enc(t),"_blank");}
+function compartilhar(t){
+  var P=window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.Share;
+  if(P){P.share({text:t}).catch(function(){});return;}
+  if(navigator.share){navigator.share({text:t}).catch(function(){});return;}
+  window.open("https://wa.me/?text="+enc(t),"_blank");
+}
 function diaTxt(){return "("+(S.dia==="QUARTA"?"x":" ")+") QUARTA  ("+(S.dia==="DOMINGO"?"x":" ")+") DOMINGO";}
 function headerLines(){
   var p=S.data.split("-"),dt=p.length===3?p[2]+"/"+p[1]+"/"+p[0]:"";
@@ -683,13 +688,18 @@ function reportWA(){
   var o=["*📋 ONION CHIPS – "+STORES[ST].titulo+"*"].concat(headerLines().map(function(l){return l.replace(/^(📅|📆|👤)\s*([^:]+):/,"$1 *$2:*");}));
   var wl=warnList();if(wl.length)o.push("⚠ *CONFERIR:* "+wl.join(", "),"");
   D.forEach(function(c,ci){
-    o.push("*"+c[0]+" "+c[1]+"*");
-    c[2].forEach(function(it){
-      o.push("▸ *"+it.n+"*");
-      it.f.forEach(function(f,fi){var kk=ci+"|"+it.n+"|"+fi;o.push("   • "+fl(f.l)+": *"+(showVal(kk)||"—")+"*"+(S.h[kk]?" _("+S.h[kk]+")_":""));});
+    var linhasCat=[];
+    c[2].forEach(function(it,ii){
+      var campos=[];
+      it.f.forEach(function(f,fi){
+        var kk=ci+"|"+it.n+"|"+fi,v=showVal(kk);
+        if(v)campos.push("   • "+fl(f.l)+": *"+v+"*"+(S.h[kk]?" _("+S.h[kk]+")_":""));
+      });
+      if(campos.length)linhasCat.push("▸ *"+it.n+"*",campos.join("\n"));
     });
-    o.push("");
+    if(linhasCat.length)o.push("*"+c[0]+" "+c[1]+"*",linhasCat.join("\n"),"");
   });
+  if(!o.length)o.push("(nenhum item contado)");
   if(CFG.foot&&S.obs)o.push("📝 *Observações:* "+S.obs);
   return o.join("\n");
 }
